@@ -2,9 +2,9 @@ const { Client, GatewayIntentBits, REST } = require("discord.js");
 const { Routes } = require('discord-api-types/v9');
 
 // On récupère le token depuis le .env
-const token = "YOURTOKEN";
-const appid = "YOURAPPID";
-const serverid = "YOURSERVERID";
+const token = "YOUR_TOKEN";
+const appid = "YOUR_APPLICATION_ID";
+const serverid = "YOUR_SERVER_ID";
 
 const client = new Client({
     intents: [
@@ -26,7 +26,10 @@ const commands = [
         name: 'profil',
         description: 'Affiche les données de l\'utilisateur.',
     },
-
+    {
+        name: 'social',
+        description: 'Affiche les réseaux sociaux de Sébastien Merveille.',
+    }
 ];
 
 const rest = new REST({ version: '9' }).setToken(token);
@@ -59,10 +62,26 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.reply("Lien vers le portfolio de [Sébastien Merveille](https://Sebastienmerv.be)");
     }
     if (commandName === 'help') {
-        await interaction.reply("Liste des commandes :\n/portfolio : Affiche le lien vers le portfolio de Sébastien Merveille.\n/help : Affiche la liste des commandes.");
+        reply = "Liste des commandes :"
+        reply += "\n/portfolio : Affiche le lien vers le portfolio de Sébastien Merveille."
+        reply += "\n/help : Affiche la liste des commandes."
+        reply += "\n/profil : Affiche les données de l'utilisateur."
+        await interaction.reply(reply);
     }
     if (commandName === 'profil') {
-        await interaction.reply('Votre nom d\'utilisateur : ' + interaction.user.username + '\nVotre ID : ' + interaction.user.id + '\n Votre photo de profil : ' + interaction.user.avatarURL() + '\nVotre tag : ' + interaction.user.tag);
+        reply = "Votre nom d'utilisateur : " + interaction.user.username
+        reply += "\nVotre ID : " + interaction.user.id
+        reply += "\nVotre photo de profil : " + interaction.user.avatarURL()
+        reply += "\nVotre tag : " + interaction.user.tag
+        await interaction.reply(reply);
+    }
+    if (commandName === 'social') {
+        reply = "Lien vers le portfolio de [Sébastien Merveille](https://Sebastienmerv.be)"
+        reply += "\nLien vers le github de [Sébastien Merveille](https://github.com/SebastienMerv)"
+        reply += "\nLien vers le linkedin de [Sébastien Merveille](https://www.linkedin.com/in/sebastienmerv/)"
+        reply += "\nLien vers le twitter de [Sébastien Merveille](https://twitter.com/SebastienMerv)"
+        reply += "\nLien vers le youtube de [Sébastien Merveille](https://www.youtube.com/SebastienMerv)"
+        await interaction.reply(reply);
     }
 });
 
