@@ -1,10 +1,8 @@
 const { Client, GatewayIntentBits, REST } = require("discord.js");
 const { Routes } = require('discord-api-types/v9');
 
-// On récupère le token depuis le .env
 const token = "YOUR_TOKEN";
-const appid = "YOUR_APPLICATION_ID";
-const serverid = "YOUR_SERVER_ID";
+const appid = "YOUR_APPID";
 
 const client = new Client({
     intents: [
@@ -39,7 +37,7 @@ const rest = new REST({ version: '9' }).setToken(token);
         console.log('Started refreshing application (/) commands.');
 
         await rest.put(
-            Routes.applicationGuildCommands(appid, serverid),
+            Routes.applicationCommands(appid),
             { body: commands },
         );
 
@@ -84,6 +82,5 @@ client.on("interactionCreate", async (interaction) => {
         await interaction.reply(reply);
     }
 });
-
 
 client.login(token);
