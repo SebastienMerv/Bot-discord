@@ -1,8 +1,8 @@
 const { Client, GatewayIntentBits, REST } = require("discord.js");
 const { Routes } = require('discord-api-types/v9');
 
-const token = "YOUR_TOKEN";
-const appid = "YOUR_APPID";
+const token = "YOURTOKEN";
+const appid = "YOURAPPID";
 
 const client = new Client({
     intents: [
@@ -27,6 +27,24 @@ const commands = [
     {
         name: 'social',
         description: 'Affiche les réseaux sociaux de Sébastien Merveille.',
+    },
+    {
+        name: 'send',
+        description: 'Envoie un message à un utilisateur.',
+        options: [
+            {
+                name: 'user',
+                description: 'Utilisateur à qui envoyer le message.',
+                type: 6,
+                required: true
+            },
+            {
+                name: 'content',
+                description: 'Contenu du message.',
+                type: 3,
+                required: true
+            }
+        ]
     }
 ];
 
@@ -48,7 +66,9 @@ const rest = new REST({ version: '9' }).setToken(token);
 })();
 
 client.on("ready", () => {
-    console.log("The AI bot is online");
+    // On set le status du bot sur "OK"
+
+    console.log("Le bot est prêt !");
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -81,6 +101,19 @@ client.on("interactionCreate", async (interaction) => {
         reply += "\nLien vers le youtube de [Sébastien Merveille](https://www.youtube.com/SebastienMerv)"
         await interaction.reply(reply);
     }
-});
+    if (commandName === 'send') {
+        const user = interaction.options.getUser('user');
+        const content = interaction.options.getString('content');
+        try {
+            await user.send(content);
+            await interaction.reply(`Message envoyé à ${user.tag}`);
+        }
+        catch (error) {
+            await interaction.reply(`Impossible d'envoyer un message à ${user.tag} ! Vérifiez que l'utilisateur accepte les messages privés et qu'il soit présent dans le channel.`);
+        }
+    }
+}
+);
+
 
 client.login(token);
